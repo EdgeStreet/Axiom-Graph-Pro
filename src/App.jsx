@@ -14,6 +14,9 @@ export default function App() {
   const [commitTimeline, setCommitTimeline] = useState(100);
   const [aiExplanation, setAiExplanation] = useState({ definition: '', functions: '', dependencies: '' });
 
+  // Live Hugging Face Cloud Endpoints
+  const BACKEND_URL = 'https://mango-life-axiom-backend.hf.space';
+
   const triggerVoiceSynthesis = (text) => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
@@ -67,7 +70,7 @@ export default function App() {
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/ingest', {
+      const response = await fetch(`${BACKEND_URL}/api/ingest`, {
         method: 'POST',
         body: formData,
       });
@@ -93,7 +96,7 @@ export default function App() {
     setAiAnalysis("Analyzing vector code matrix parameters...");
     
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/query', {
+      const response = await fetch(`${BACKEND_URL}/api/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: searchQuery }),
@@ -323,7 +326,7 @@ export default function App() {
           )}
         </div>
 
-        {/* STEP 6: GIT TIME-MACHINE HORIZONTAL SLIDER AXIS */}
+        {/* GIT TIME-MACHINE HORIZONTAL SLIDER AXIS */}
         <div className="w-[calc(100vw-1.5rem)] mx-3 relative z-20 pointer-events-auto bg-gray-900/90 border border-gray-800 p-3 rounded-lg flex items-center gap-4 shadow-xl">
           <div className="text-xs text-cyan-400 font-bold flex items-center gap-1.5 min-w-[150px]">
             <GitBranch size={14} /> Git Evolution: {commitTimeline}%
